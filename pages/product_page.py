@@ -8,8 +8,7 @@ class ProductPage(BasePage):
         add_link.click()
 
     def should_be_see_message_product_add(self):
-        self.should_be_price_in_basket_be_equal_price_product()
-        self.should_be_name_product_in_message_the_same_as_added()
+        assert self.browser.find_element(*ProductPageLocators.SUCCESS_MESSAGE), "No successful message"
 
     def should_be_name_product_in_message_the_same_as_added(self):
         name_product = self.browser.find_element(*ProductPageLocators.NAME_PRODUCT).text
@@ -20,5 +19,12 @@ class ProductPage(BasePage):
     def should_be_price_in_basket_be_equal_price_product(self):
         price_product = self.browser.find_element(*ProductPageLocators.PRICE_PRODUCT).text
         price_in_message = self.browser.find_element(*ProductPageLocators.PRICE_IN_MESSAGE).text
-
         assert price_in_message == price_product, 'Price in basket not valid'
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_be_success_messages_disappear(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should disappear in 4sec"
